@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -96,6 +97,7 @@ ROOT_URLCONF = 'taskManager.urls'
 
 TEMPLATES = [
     {
+        'DIRS': ['templates'],
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
@@ -110,8 +112,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'taskManager.wsgi.application'
+#WSGI_APPLICATION = 'taskManager.wsgi.application'
+ASGI_APPLICATION = 'taskManager.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
