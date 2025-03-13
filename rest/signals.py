@@ -14,8 +14,9 @@ def notification_status_updated(sender, instance, **kwargs):
 
         if old_instance.complete != instance.complete:  # Vérifier si `status` a changé
             channel_layer = get_channel_layer()
+            user_id=old_instance.project.owner
             async_to_sync(channel_layer.group_send)(
-                'public_room',
+                f"user_{user_id}",
                 {
                     "type": "send_notification",
                     "message": f"Le statut est passé de {old_instance.complete} à {instance.complete}"
