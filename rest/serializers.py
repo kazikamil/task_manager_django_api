@@ -26,7 +26,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model=Task
-        fields=['id','title','description','duration','project'] 
+        fields=['id','title','description','duration','project','owner','complete'] 
+        extra_kwargs={'complete':{'read_only':True}}
 
     def create(self, validated_data):
         task=Task.objects.create(**validated_data)

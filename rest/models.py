@@ -13,5 +13,7 @@ class Task (models.Model):
     title=models.CharField(max_length=50,null=False,blank=False)
     description=models.CharField(max_length=500)
     duration=models.DurationField()
+    owner=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    complete=models.BooleanField(default=False)
 
 # Create your models here.

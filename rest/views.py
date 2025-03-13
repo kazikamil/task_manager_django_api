@@ -1,17 +1,15 @@
-from django.shortcuts import render
-from rest_framework import generics,permissions
+from urllib import response
+from django.shortcuts import get_object_or_404, render
+from rest_framework import generics
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from .serializers import *
 from .models import User,Project
+from rest_framework.views import APIView
+from rest_framework import status
 
-class IsOwner(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return obj.owner== request.user
-    
-class IsProjectOwner(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        print(obj.project.owner)
-        return obj.project.owner == request.user  # ✅ Vérifie si l'utilisateur est bien le propriétaire
+from .permissions import *
+
+
    
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -69,6 +67,14 @@ class TaskDeleteUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Task.objects.filter(project__owner=self.request.user)
 
+class CompleteTaskView(APIView):
+    permission_classes=[IsOwner]
+
+    def post(self, request, task_id):
+        order = get_object_or_404(Task, id=task_id, owner=request.user)
+        order.complete = True
+        order.save()
+        return response({"message": "Order marked as complete"}, status=status.HTTP_200_OK)
 
 # Create your views here.
 
