@@ -6,15 +6,17 @@ from .models import Task
 
 @receiver(pre_save, sender=Task)
 def notification_status_updated(sender, instance, **kwargs):
+    print("signal1")
     if instance.id:  # Vérifier si l'instance existe déjà (pas une création)
         try:
             old_instance = Task.objects.get(id=instance.id)
         except Task.DoesNotExist:
             return
-
+        print("signal2")
         if old_instance.complete != instance.complete:  # Vérifier si `status` a changé
             channel_layer = get_channel_layer()
-            user_id=old_instance.project.owner
+            user_id=old_instance.project.owner.id
+            print(user_id)
             async_to_sync(channel_layer.group_send)(
                 f"user_{user_id}",
                 {

@@ -28,5 +28,6 @@ urlpatterns = [
     path('api/project/update/<int:pk>',ProjectUpdateAPIView.as_view(),name='project_update'),
     path('api/task/',TaskListCreateAPIView.as_view(),name='task'),
     path('api/task/update/<int:pk>',TaskDeleteUpdateAPIView.as_view(),name='task_upt'),
+    path('api/task/<int:task_id>/complete',CompleteTaskView.as_view(),name='complet'),
 
 ]

@@ -8,6 +8,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         self.user = self.scope["user"]
 
         if self.user.is_authenticated:
+            print(self.user.id)
             self.group_name = f"user_{self.user.id}"  # 🔥 Groupe unique pour chaque utilisateur
             await self.channel_layer.group_add(self.group_name, self.channel_name)
             await self.accept()

@@ -6,6 +6,7 @@ from .serializers import *
 from .models import User,Project
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.response import Response 
 
 from .permissions import *
 
@@ -68,13 +69,13 @@ class TaskDeleteUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
         return Task.objects.filter(project__owner=self.request.user)
 
 class CompleteTaskView(APIView):
-    permission_classes=[IsOwner]
+    permission_classes = [IsOwner]
 
     def post(self, request, task_id):
-        order = get_object_or_404(Task, id=task_id, owner=request.user)
-        order.complete = True
-        order.save()
-        return response({"message": "Order marked as complete"}, status=status.HTTP_200_OK)
+        task = get_object_or_404(Task, id=task_id, owner=request.user)
+        task.complete = True
+        task.save()
+        return Response({"message": "Task marked as complete"}, status=status.HTTP_200_OK)  # ✅ Utiliser Response
 
 # Create your views here.
 
