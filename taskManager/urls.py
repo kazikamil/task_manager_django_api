@@ -18,16 +18,12 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 from rest.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/user/',UserCreateAPIView.as_view(),name="create_user"),
     path("api/token/",TokenObtainPairView.as_view(),name="get_token"),
     path("api/token/refresh",TokenRefreshView.as_view(),name="refresh"),
     path("api-auth/",include("rest_framework.urls")),
-    path('api/project/',ProjectListCreateAPIView.as_view(),name='project'),
-    path('api/project/update/<int:pk>',ProjectUpdateAPIView.as_view(),name='project_update'),
-    path('api/task/',TaskListCreateAPIView.as_view(),name='task'),
-    path('api/task/update/<int:pk>',TaskDeleteUpdateAPIView.as_view(),name='task_upt'),
-    path('api/task/<int:task_id>/complete',CompleteTaskView.as_view(),name='complet'),
-
+    path('api/',include("rest.urls")),   
 ]
